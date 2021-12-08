@@ -3,24 +3,62 @@ import axios from 'axios';
 
 import './VideosList.css';
 
-import VideoDialog from './VideoDialog';
+import VideoPlayDialog from './VideoPlayDialog';
+import VideoEditDialog from './VideoEditDialog';
 
 export default function VideosList() {
 
   const [videos, setVideos] = useState([]);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [video, setVideo] = useState(null);
 
-  useEffect(() => {
+  /**
+   * Call strapi api to load all videos from database
+   */
+  const loadVideos = () => {
     // search for public videos only
-    axios.get('http://localhost:1337/videos?isPublic=true').then(response => {
+    axios.get('http://localhost:1337/videos').then(response => {
       setVideos(response.data);
     });
+  }
+
+  useEffect(() => {
+    loadVideos();
   }, []);
 
+  /**
+   * Handle the open of the play dialog
+   * @param {Video} video 
+   */
   const handleVideoDialogOpen = (video) => {
     setVideo(video);
     setVideoOpen(true);
+  }
+
+  /**
+   * Handle the open of the edit dialog
+   * @param {Event} event 
+   * @param {Video} video 
+   */
+  const handleVideoEditOpen = (event, video) => {
+    event.stopPropagation();
+    setVideo(video);
+    setEditOpen(true);
+  }
+
+  /**
+   * Close the dialog and use reload to jknow if we need to load videos fron strapi api again
+   * @param {Boolean} reload 
+   */
+  const handleDialogClose = (reload) => {
+    setVideoOpen(false);
+    setEditOpen(false);
+    // to prevent an error on the fragment rendering in the dialogs
+    setTimeout(() => {
+      setVideo(null);
+      if (reload) loadVideos();
+    }, 500)
   }
 
   return (
@@ -43,12 +81,12 @@ export default function VideosList() {
                   >
                     Slug
                   </th>
-                  {/* <th
+                  <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Public
-                  </th> */}
+                  </th>
                   <th scope="col" className="w-1/4 relative px-6 py-3">
                     <span className="sr-only">Edit</span>
                   </th>
@@ -57,16 +95,19 @@ export default function VideosList() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {videos.length > 0 && videos.map((video) => (
                   <tr key={video.id} onClick={() => handleVideoDialogOpen(video)}>
-                    <td className="w-1/4 px-6 py-4 whitespace-prewrap">
+                    <td className="w-1/4 sm:w-1/2 px-2 sm:px-6 py-4 whitespace-prewrap">
                       <div className="text-left text-sm text-gray-900">{video.title}</div>
                     </td>
-                    <td className="w-1/4 px-6 py-4 whitespace-prewrap">
+                    <td className="w-1/4 sm:w-1/2 px-2 sm:px-6 py-4 whitespace-prewrap">
                       <div className="text-left text-sm text-gray-900">{video.slug}</div>
                     </td>
-                    <td className="w-1/4 px-6 py-4 whitespace-prewrap text-right text-sm font-medium">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                    <td className="w-1/4 sm:w-1/4 px-2 sm:px-6 py-4 whitespace-prewrap">
+                      <div className="text-left text-sm text-gray-900">{video.isPublic ? 'Yes' : 'No'}</div>
+                    </td>
+                    <td className="z-10 w-1/4 sm:w-1/3 px-2 sm:px-6 py-4 whitespace-prewrap text-right text-sm font-medium">
+                      <button onClick={(event) => handleVideoEditOpen(event, video)} type="button" className="text-indigo-600 hover:text-indigo-900">
                         Edit
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -76,7 +117,8 @@ export default function VideosList() {
         </div>
       </div>
 
-      <VideoDialog isOpen={videoOpen} video={video} closeVideoDialog={() => setVideoOpen(false)}></VideoDialog>
+      <VideoPlayDialog isOpen={videoOpen} video={video} closeVideoDialog={() => handleDialogClose(false)}></VideoPlayDialog>
+      <VideoEditDialog isOpen={editOpen} video={video} closeVideoDialog={() => handleDialogClose(true)}></VideoEditDialog>
     </div>
   )
 }

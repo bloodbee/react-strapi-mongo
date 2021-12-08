@@ -1,7 +1,7 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function VideoDialog(props) {
+export default function VideoPlayDialog(props) {
   const cancelButtonRef = useRef(null);
 
   // first check video type
@@ -17,7 +17,7 @@ export default function VideoDialog(props) {
   const getVideoSrcFormatted = () => {
     switch (type) {
       case 'youtube':
-        return props.video.url.replace(/youtube\.com\/watch\?v\=/m, 'youtube.com/embed/')
+        return props.video.url.replace(/youtube\.com\/watch\?v=/m, 'youtube.com/embed/')
       case 'dailymotion':
         return props.video.url.replace(/dailymotion\.com/m, 'dailymotion.com/embed')
       case 'classic':
@@ -65,13 +65,13 @@ export default function VideoDialog(props) {
                       {props.video.title}
                     </Dialog.Title>
                     <div className="mt-2 h-96">
-                      {type == 'youtube' && (
+                      {type === 'youtube' && (
                         <iframe className="mx-auto" width="100%" height="400" src={getVideoSrcFormatted() + '?autoplay=1'} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
                       )}
-                      {type == 'dailymotion' && (
-                        <iframe className="mx-auto h-full" frameBorder="0" type="text/html" src={ getVideoSrcFormatted() + '?autoplay=1'} width="100%" height="400" allow="autoplay"></iframe>
+                      {type === 'dailymotion' && (
+                        <iframe title="Dailymotion video player" className="mx-auto h-full" frameBorder="0" type="text/html" src={ getVideoSrcFormatted() + '?autoplay=1'} width="100%" height="400" allow="autoplay"></iframe>
                       )}
-                      {type == 'classic' && (
+                      {type === 'classic' && (
                         <video className="mx-auto h-full" width="100%" height="400" controls autoPlay>
                           <source src={getVideoSrcFormatted()} type="video/mp4" />
                           Your browser does not support the video tag.
