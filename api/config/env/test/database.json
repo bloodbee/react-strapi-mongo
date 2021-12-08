@@ -1,7 +1,7 @@
 {
-  "defaultConnection": "default",
+  "defaultConnection": "test",
   "connections": {
-    "default": {
+    "test": {
       "connector": "bookshelf",
       "settings": {
         "client": "sqlite",
