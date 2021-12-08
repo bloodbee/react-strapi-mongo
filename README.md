@@ -17,6 +17,8 @@ Launch docker
 docker-compose up
 ```
 
+At the first build, some datas will be populated into the database.
+
 The strapi api will be accessible on http://localhost:1337
 
 The frontend will be accessible on http://localhost:3000

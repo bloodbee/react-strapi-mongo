@@ -117,7 +117,7 @@ export default function VideosList() {
         </div>
       </div>
 
-      <VideoPlayDialog isOpen={videoOpen} video={video} closeVideoDialog={() => handleDialogClose(false)}></VideoPlayDialog>
+      <VideoPlayDialog isOpen={videoOpen && video.isPublic === true} video={video} closeVideoDialog={() => handleDialogClose(false)}></VideoPlayDialog>
       <VideoEditDialog isOpen={editOpen} video={video} closeVideoDialog={() => handleDialogClose(true)}></VideoEditDialog>
     </div>
   )
