@@ -7,15 +7,45 @@ It allow to manage some videos in the strapi admin dashboard, play and edit them
 
 ## How to start ?
 
-**You need [Docker](https://www.docker.com/) installed on your computer.**
+First of all, clone the repository.
 
-Clone the repository
+### Classic way
+
+You need NodeJs version 16.x and a MongoDB server launched. It's preferable to use Yarn package manager.
+
+Install dependencies and launch the api :
+
+```bash
+cd api
+yarn install
+yarn start
+```
+
+In an other terminal, install dependencies and launch the frontend :
+```bash
+cd frontend
+yarn install
+yarn start
+```
+And that's it !
+
+
+### Docker
+
+**You need [Docker](https://www.docker.com/) installed on your computer.**
 
 Launch docker
 
 ```bash
 docker-compose up
 ```
+
+If you want to rebuild the images
+```bash
+docker-compose up --build
+```
+
+## What's next ?
 
 At the first build, some datas will be populated into the database.
 
