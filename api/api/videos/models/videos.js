@@ -11,13 +11,19 @@ module.exports = {
     // Auto generate slug on video creation
     beforeCreate: async (data) => {
       if (data.title) {
-        data.slug = slugify(data.title).toLowerCase();
+        data.slug = slugify(data.title, {
+          lower: true,
+          remove: /[*+~.()'"!:@]/g
+        });
       }
     },
     // Auto generate slug on video update
     beforeUpdate: async (params, data) => {
       if (data.title) {
-        data.slug = slugify(data.title).toLowerCase();
+        data.slug = slugify(data.title, {
+          lower: true,
+          remove: /[*+~.()'"!:@]/g
+        });
       }
     },
   },

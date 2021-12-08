@@ -1,0 +1,4 @@
+#videos-list tbody tr:hover {
+  cursor: pointer;
+  background-color: #DBEAFE;
+}
