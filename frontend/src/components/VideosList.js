@@ -66,7 +66,7 @@ export default function VideosList() {
       <div className="-my-2 mx-0 sm:-mx-6 lg:-mx-8">
         <div className="py-2 align-middle inline-block w-full sm:w-4/5 sm:min-w-full max-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table id="videos-list" className="table-auto max-w-full divide-y divide-gray-200">
+            <table data-testid="videos-table" id="videos-list" className="table-auto max-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th
@@ -94,7 +94,7 @@ export default function VideosList() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {videos.length > 0 && videos.map((video) => (
-                  <tr key={video.id} onClick={() => handleVideoDialogOpen(video)}>
+                  <tr data-testid="videos-table-row" key={video.id} onClick={() => handleVideoDialogOpen(video)}>
                     <td className="w-1/4 sm:w-1/2 px-2 sm:px-6 py-4 whitespace-prewrap">
                       <div className="text-left text-sm text-gray-900">{video.title}</div>
                     </td>
